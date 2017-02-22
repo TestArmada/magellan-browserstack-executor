@@ -1,0 +1,1 @@
+# magellan-browserstack-executor
