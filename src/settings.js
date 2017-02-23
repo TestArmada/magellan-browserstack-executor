@@ -10,6 +10,7 @@ const config = {
   key: null,
 
   // optional:
+  useTunnels: null,
   localIdentifier: null
   // locksServerLocation: null,
   // locksOutageTimeout: 1000 * 60 * 5,

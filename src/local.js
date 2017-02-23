@@ -18,7 +18,7 @@ export default class Local {
   initialize() {
     return new Promise((resolve, reject) => {
       if (!this.options.key) {
-        return reject("Browserstack local support is missing configuration: Browserstack key.");
+        return reject("Browserstack local tunnel support is missing configuration: Browserstack key.");
       }
 
       return resolve();
