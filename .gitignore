@@ -1,0 +1,14 @@
+reports
+screens
+.idea
+.DS_Store
+selenium_modules
+tests_output
+*.log
+node_modules/*
+!node_modules/lib
+temp
+lib
+tests/lib
+
+.vscode
