@@ -22,7 +22,8 @@ describe("Connect", () => {
   let tunnel;
 
   let options = {
-    key: "3PCHzsGgb9yGMapTRsJq",
+    key: "FAKE_KEY",
+    user: "FAKE_USER",
     localIdentifier: "FAKE_IDENTIFIER",
     verbose: true
   };
@@ -49,7 +50,7 @@ describe("Connect", () => {
     });
 
     it("missing key", () => {
-      tunnel = new Connect({}, BrowserstackMock);
+      tunnel = new Connect({ user: "FAKE_USER" }, BrowserstackMock);
 
       return tunnel
         .initialize()
@@ -57,7 +58,19 @@ describe("Connect", () => {
         .catch(err =>
           expect(Promise.resolve(err))
             .to.eventually
-            .equal("Browserstack local support is missing configuration: Browserstack key."));
+            .equal("Browserstack local tunnel support is missing configuration: Browserstack key."));
+    });
+
+     it("missing user", () => {
+      tunnel = new Connect({ key: "FAKE_KEY" }, BrowserstackMock);
+
+      return tunnel
+        .initialize()
+        .then(() => assert(false, "browserstack local connect key isn't processed correctly"))
+        .catch(err =>
+          expect(Promise.resolve(err))
+            .to.eventually
+            .equal("Browserstack local tunnel support is missing configuration: Browserstack user."));
     });
   });
 

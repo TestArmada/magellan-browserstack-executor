@@ -1,6 +1,6 @@
-import _ from "lodash";
+// import _ from "lodash";
 import { argv } from "yargs";
-import logger from "./logger";
+// import logger from "./logger";
 
 export default {
   getProfiles: (opts, argvMock = null) => {
@@ -12,19 +12,23 @@ export default {
 
     return new Promise((resolve) => {
       const desiredCapabilities = {
-        'browserName': 'Firefox',
-        'browser_version': '51.0',
-        'os': 'OS X',
-        'os_version': 'Sierra',
-        'resolution': '1280x1024'
+        "browserName": "Chrome",
+        "browser_version": "56.0",
+        "os": "OS X",
+        "os_version": "Sierra",
+        "resolution": "1280x1024"
       };
-
-      resolve({
-        desiredCapabilities,
-        executor: "browserstack",
-        nightwatchEnv: "browserstack",
-        id: "browserstack_firefox_51"
-      });
+      if (runArgv.bs_browser
+        || runArgv.bs_browsers) {
+        resolve({
+          desiredCapabilities,
+          executor: "browserstack",
+          nightwatchEnv: "browserstack",
+          id: "browserstack_firefox_51"
+        });
+      } else {
+        resolve();
+      }
     });
 
     // return SauceBrowsers
@@ -115,18 +119,18 @@ export default {
 
     return new Promise((resolve) => {
       const desiredCapabilities = {
-        'browserName': 'Firefox',
-        'browser_version': '51.0',
-        'os': 'OS X',
-        'os_version': 'Sierra',
-        'resolution': '1280x1024'
+        "browserName": "Chrome",
+        "browser_version": "56.0",
+        "os": "OS X",
+        "os_version": "Sierra",
+        "resolution": "1280x1024"
       };
 
       resolve({
         desiredCapabilities,
         executor: "browserstack",
         nightwatchEnv: "browserstack",
-        id: "browserstack_firefox_51"
+        id: "browserstack_chrome_50"
       });
     });
   },

@@ -8,6 +8,7 @@ const TEMP_DIR = path.resolve(argvs.temp_dir || "./temp");
 const config = {
   // required:
   key: null,
+  user: null,
 
   // optional:
   useTunnels: null,

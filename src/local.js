@@ -18,7 +18,13 @@ export default class Local {
   initialize() {
     return new Promise((resolve, reject) => {
       if (!this.options.key) {
-        return reject("Browserstack local tunnel support is missing configuration: Browserstack key.");
+        return reject("Browserstack local tunnel support is "
+          + "missing configuration: Browserstack key.");
+      }
+
+      if (!this.options.user) {
+        return reject("Browserstack local tunnel support is "
+          + "missing configuration: Browserstack user.");
       }
 
       return resolve();
@@ -36,12 +42,11 @@ export default class Local {
       return new Promise((resolve, reject) => {
         const logFilePath = `${path.resolve(settings.tempDir)}/build-${
           localIdentifier}_browserstacklocal.log`;
-
         const localOptions = {
           key: localKey,
           localIdentifier,
 
-          verbose: this.options.verbose,
+          verbose: settings.debug,
           logFile: logFilePath,
           forceLocal: true
         };

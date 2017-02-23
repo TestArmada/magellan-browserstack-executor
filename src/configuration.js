@@ -1,6 +1,8 @@
 import { argv } from "yargs";
 import _ from "lodash";
 import logger from "./logger";
+import settings from "./settings";
+import guid from "./util/guid";
 
 export default {
   getConfig: () => {
@@ -24,10 +26,11 @@ export default {
 
     // required:
     settings.config.key = env.BROWSERSTACK_ACCESS_KEY;
+    settings.config.user = env.BROWSERSTACK_USER;
     // optional:
     settings.config.localIdentifier = runArgv.bs_tunnel_id;
     settings.config.useTunnels = !!runArgv.bs_create_tunnel;
-    settings.config.tunnelTimeout = env.SAUCE_TUNNEL_CLOSE_TIMEOUT;
+    // settings.config.tunnelTimeout = env.SAUCE_TUNNEL_CLOSE_TIMEOUT;
 
     // settings.config.locksServerLocation = env.LOCKS_SERVER;
 
@@ -45,6 +48,10 @@ export default {
       key: {
         required: true,
         envKey: "BROWSERSTACK_ACCESS_KEY"
+      },
+      user: {
+        required: true,
+        envKey: "BROWSERSTACK_USER"
       }
     };
 
@@ -58,7 +65,7 @@ export default {
         if (!settings.config[k]) {
           if (v.required) {
             logger.err(`Error! Browserstack local tunnel requires ${k} to be set. `
-              + ` Check if theenvironment variable $${v.envKey} is defined.`);
+              + ` Check if the environment variable $${v.envKey} is defined.`);
             valid = false;
           }
         }
@@ -74,6 +81,7 @@ export default {
       }
 
       // after verification we want to add sauce_tunnel_id if it's null till now
+      console.log(settings.config);
       if (!settings.config.localIdentifier && settings.config.useTunnels) {
         // auto generate tunnel id
         settings.config.localIdentifier = guid();

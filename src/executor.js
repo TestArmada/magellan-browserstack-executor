@@ -7,7 +7,7 @@ import analytics from "./global_analytics";
 let config = settings.config;
 
 let tunnel = null;
-let locks = null;
+// const locks = null;
 
 export default {
   setup: (mocks = null) => {
@@ -52,7 +52,7 @@ export default {
     } else {
       return new Promise((resolve) => {
         if (config.localIdentifier) {
-          let tunnelAnnouncement = config.localIdentifier;
+          const tunnelAnnouncement = config.localIdentifier;
         //   if (config.sharedSauceParentAccount) {
         //     tunnelAnnouncement = `${config.sharedSauceParentAccount }/${ tunnelAnnouncement}`;
         //   }
