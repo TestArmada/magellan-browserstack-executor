@@ -10,7 +10,7 @@ let tunnel = null;
 // const locks = null;
 
 export default {
-  setup: (mocks = null) => {
+  setupRunner: (mocks = null) => {
     // let ILocks = Locks;
     let ITunnel = Tunnel;
 
@@ -65,7 +65,7 @@ export default {
     }
   },
 
-  teardown: (mocks = null) => {
+  teardownRunner: (mocks = null) => {
     if (mocks && mocks.config) {
       config = mocks.config;
     }
@@ -84,12 +84,12 @@ export default {
     }
   },
 
-  stage: (callback) => {
+  setupTest: (callback) => {
     // locks.acquire(callback);
     callback();
   },
 
-  wrapup: (info, callback) => {
+  teardownTest: (info, callback) => {
     // locks.release(info, callback);
     callback();
   },
@@ -102,5 +102,9 @@ export default {
     }
 
     return ifork(testRun.getCommand(), testRun.getArguments(), options);
+  },
+
+  summerizeTest: (magellanBuildId, testResult, callback) => {
+    callback();
   }
 };

@@ -81,7 +81,6 @@ export default {
       }
 
       // after verification we want to add sauce_tunnel_id if it's null till now
-      console.log(settings.config);
       if (!settings.config.localIdentifier && settings.config.useTunnels) {
         // auto generate tunnel id
         settings.config.localIdentifier = guid();
