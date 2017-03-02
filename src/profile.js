@@ -1,8 +1,26 @@
-// import _ from "lodash";
+import _ from "lodash";
 import { argv } from "yargs";
-// import logger from "./logger";
+import logger from "./logger";
 
 export default {
+  getNightwatchConfig: (profile, browserstackSettings) => {
+    const capabilities = _.assign({}, profile.desiredCapabilities);
+
+    capabilities["browserstack.user"] = browserstackSettings.user;
+    capabilities["browserstack.key"] = browserstackSettings.key;
+
+    if (browserstackSettings.useTunnels) {
+      capabilities["browserstack.local"] = true;
+      capabilities["browserstack.localIdentifier"] = browserstackSettings.localIdentifier;
+    }
+    const config = {
+      desiredCapabilities: capabilities
+    };
+
+    logger.debug(`executor config: ${JSON.stringify(config)}`);
+    return config;
+  },
+
   getProfiles: (opts, argvMock = null) => {
     let runArgv = argv;
 
