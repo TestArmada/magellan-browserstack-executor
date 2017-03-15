@@ -17,14 +17,19 @@ Executor for [Magellan](https://github.com/TestArmada/magellan) to run [Nightwat
 Please follow the steps
 
  1. `npm install testarmada-magellan-browserstack-executor --save`
- 2. add following block to your `magellan.json` (if there isn't a `magellan.json` please create one under your folder root)
+ 2. Add following env variables to your bash system
+ ```console
+ export BROWSERSTACK_ACCESS_KEY=${YOUR_BROWSERSTACK_ACCESSKEY}
+ export BROWSERSTACK_USER=${YOUR_BROWSERSTACK_USERNAME}
+ ```
+ 3. Add following block to your `magellan.json` (if there isn't a `magellan.json` please create one under your folder root)
  ```javascript
  "executors": [
     "testarmada-magellan-browserstack-executor"
  ]
  ```
 
- 3. `./node_modules/.bin/magellan --help` to see if you can see the following content printed out
+ 4. `./node_modules/.bin/magellan --help` to see if you can see the following content printed out
  ```
   Executor-specific (testarmada-magellan-browserstack-executor)
    --bs_browser=browsername             Run tests in chrome, firefox.
