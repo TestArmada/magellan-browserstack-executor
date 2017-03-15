@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { argv } from "yargs";
 import logger from "./logger";
+import Pancake from "./pancake";
 
 export default {
   getNightwatchConfig: (profile, browserstackSettings) => {
@@ -28,71 +29,46 @@ export default {
       runArgv = argvMock;
     }
 
-    return new Promise((resolve) => {
-      const desiredCapabilities = {
-        "browserName": "Chrome",
-        "browser_version": "56.0",
-        "os": "OS X",
-        "os_version": "Sierra",
-        "resolution": "1280x1024"
-      };
-      if (runArgv.bs_browser
-        || runArgv.bs_browsers) {
-        resolve({
-          desiredCapabilities,
-          executor: "browserstack",
-          nightwatchEnv: "browserstack",
-          id: "browserstack_firefox_51"
+    return Pancake
+      .initialize()
+      .then(() => {
+        return new Promise((resolve) => {
+          if (runArgv.bs_browser) {
+            const p = {
+              desiredCapabilities: Pancake.get(runArgv.bs_browser),
+              executor: "browserstack",
+              nightwatchEnv: "browserstack",
+              id: runArgv.bs_browser
+            };
+
+            logger.debug(`detected profile: ${JSON.stringify(p)}`);
+
+            resolve(p);
+          } else if (runArgv.bs_browsers) {
+            const tempBrowsers = runArgv.bs_browsers.split(",");
+            const returnBrowsers = [];
+
+            _.forEach(tempBrowsers, (browser) => {
+              const b = browser.trim();
+              const p = {
+                desiredCapabilities: Pancake.get(b),
+                executor: "browserstack",
+                nightwatchEnv: "browserstack",
+                // id is for magellan reporter
+                id: b
+              };
+
+              returnBrowsers.push(p);
+            });
+
+            logger.debug(`detected profiles: ${JSON.stringify(returnBrowsers)}`);
+
+            resolve(returnBrowsers);
+          } else {
+            resolve();
+          }
         });
-      } else {
-        resolve();
-      }
-    });
-
-    // return SauceBrowsers
-    //   .initialize()
-    //   .then(() => {
-    //     return new Promise((resolve) => {
-    //       if (runArgv.sauce_browser) {
-    //         const p = {
-    //           desiredCapabilities: SauceBrowsers.get({
-    //             id: runArgv.sauce_browser
-    //           })[0],
-    //           executor: "sauce",
-    //           nightwatchEnv: "sauce",
-    //           id: runArgv.sauce_browser
-    //         };
-
-    //         logger.debug(`detected profile: ${JSON.stringify(p)}`);
-
-    //         resolve(p);
-    //       } else if (runArgv.sauce_browsers) {
-    //         const tempBrowsers = runArgv.sauce_browsers.split(",");
-    //         const returnBrowsers = [];
-
-    //         _.forEach(tempBrowsers, (browser) => {
-    //           const b = browser.trim();
-    //           const p = {
-    //             desiredCapabilities: SauceBrowsers.get({
-    //               id: b
-    //             })[0],
-    //             executor: "sauce",
-    //             nightwatchEnv: "sauce",
-    //             // id is for magellan reporter
-    //             id: b
-    //           };
-
-    //           returnBrowsers.push(p);
-    //         });
-
-    //         logger.debug(`detected profiles: ${JSON.stringify(returnBrowsers)}`);
-
-    //         resolve(returnBrowsers);
-    //       } else {
-    //         resolve();
-    //       }
-    //     });
-    //   });
+      });
   },
 
   /*eslint-disable no-unused-vars*/
@@ -101,9 +77,8 @@ export default {
     // browser => id
     // resolution => screenResolution
     // orientation => deviceOrientation
-    // const prof = {
-    //   id: profile.browser
-    // };
+
+    const id = profile.browser;
 
     // if (profile.resolution) {
     //   prof.screenResolution = profile.resolution;
@@ -113,83 +88,47 @@ export default {
     //   prof.deviceOrientation = profile.orientation;
     // }
 
-    // return SauceBrowsers
-    //   .initialize()
-    //   .then(() => {
-    //     return new Promise((resolve, reject) => {
-    //       try {
-    //         const desiredCapabilities = SauceBrowsers.get(prof)[0];
-    //         // add executor info back to capabilities
-    //         const p = {
-    //           desiredCapabilities,
-    //           executor: profile.executor,
-    //           nightwatchEnv: profile.executor,
-    //           id: prof.id
-    //         };
+    return Pancake
+      .initialize()
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          try {
+            const desiredCapabilities = Pancake.get(id);
+            // add executor info back to capabilities
+            const p = {
+              desiredCapabilities,
+              executor: profile.executor,
+              nightwatchEnv: profile.executor,
+              id
+            };
 
-    //         resolve(p);
-    //       } catch (e) {
-    //         reject(`Executor sauce cannot resolve profile ${
-    //           profile}`);
-    //       }
-    //     });
-    //   });
-
-    return new Promise((resolve) => {
-      const desiredCapabilities = {
-        "browserName": "Chrome",
-        "browser_version": "56.0",
-        "os": "OS X",
-        "os_version": "Sierra",
-        "resolution": "1280x1024"
-      };
-
-      resolve({
-        desiredCapabilities,
-        executor: "browserstack",
-        nightwatchEnv: "browserstack",
-        id: "browserstack_chrome_50"
+            resolve(p);
+          } catch (e) {
+            reject(`Executor browserstack cannot resolve profile ${
+              profile}`);
+          }
+        });
       });
-    });
   },
 
   listBrowsers: (opts, callback, argvMock = null) => {
-    // let runArgv = argv;
+    let runArgv = argv;
 
-    // if (argvMock) {
-    //   runArgv = argvMock;
-    // }
+    if (argvMock) {
+      runArgv = argvMock;
+    }
 
-    // SauceBrowsers
-    //   .initialize(true)
-    //   .then(() => {
-    //     return new Promise((resolve) => {
-    //       if (runArgv.device_additions) {
-    //         logger.log("Loading customized profiles");
-    //         SauceBrowsers.addNormalizedBrowsersFromFile(runArgv.device_additions);
-    //       }
-    //       resolve();
-    //     });
-    //   })
-    //   .then(() => {
-    //     return new Promise((resolve) => {
-    //       listSauceCliBrowsers((browserTable) => {
-    //         // convert table heading
-    //         browserTable.options.head[1] = "Copy-Paste Command-Line Option";
-    //         logger.loghelp(browserTable.toString());
-    //         logger.loghelp("");
-    //         resolve(browserTable);
-    //       });
-    //     });
-    //   })
-    //   .then((browserTable) => {
-    //     callback(null, browserTable);
-    //   })
-    //   .catch((err) => {
-    //     logger.err(`Couldn't fetch sauce browsers. Error: ${err}`);
-    //     logger.err(err.stack);
-    //     callback(err);
-    //   });
-    callback(null, "browserstack fake");
+    Pancake
+      .initialize()
+      .then((browsers) => {
+        const table = Pancake.cliList();
+        logger.loghelp(table.toString());
+        callback(null, browsers);
+      })
+      .catch((err) => {
+        logger.err(`Couldn't fetch browserstack browsers. Error: ${err}`);
+        logger.err(err.stack);
+        callback(err);
+      });
   }
 };
