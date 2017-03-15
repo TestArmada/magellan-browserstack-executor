@@ -85,17 +85,17 @@ export default {
 
   _generateKey(capabilities) {
     const values = [
-      capabilities["os"],
-      capabilities["os_version"],
-      capabilities["browser"]
+      capabilities.os,
+      capabilities.os_version,
+      capabilities.browser
     ];
 
-    if (capabilities["device"]) {
-      values.push(capabilities["device"]);
+    if (capabilities.device) {
+      values.push(capabilities.device);
     }
 
-    if (capabilities["browser_version"]) {
-      values.push(capabilities["browser_version"]);
+    if (capabilities.browser_version) {
+      values.push(capabilities.browser_version);
     }
 
     const key = values.join("_").replace(/(\.|\s)/g, "_");
