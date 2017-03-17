@@ -75,18 +75,10 @@ export default {
   getCapabilities: (profile, opts) => {
     // profile key mapping
     // browser => id
-    // resolution => screenResolution
+    // resolution => resolution
     // orientation => deviceOrientation
 
     const id = profile.browser;
-
-    // if (profile.resolution) {
-    //   prof.screenResolution = profile.resolution;
-    // }
-
-    // if (profile.orientation) {
-    //   prof.deviceOrientation = profile.orientation;
-    // }
 
     return Pancake
       .initialize()
@@ -95,6 +87,14 @@ export default {
           try {
             const desiredCapabilities = Pancake.get(id);
             // add executor info back to capabilities
+
+            if (profile.resolution) {
+              desiredCapabilities.resolution = profile.resolution;
+            }
+
+            if (profile.orientation) {
+              desiredCapabilities.deviceOrientation = profile.orientation;
+            }
             const p = {
               desiredCapabilities,
               executor: profile.executor,
@@ -104,8 +104,8 @@ export default {
 
             resolve(p);
           } catch (e) {
-            reject(`Executor browserstack cannot resolve profile ${
-              profile}`);
+            reject(`Executor browserstack cannot resolve profile 
+            ${JSON.stringify(profile)}`);
           }
         });
       });

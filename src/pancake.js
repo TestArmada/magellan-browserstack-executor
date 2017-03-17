@@ -67,9 +67,9 @@ export default {
           table.push([
             clc.blackBright(`${count}.`),
             key,
-            capabilities.browser,
+            _.capitalize(capabilities.browser),
             capabilities.browser_version ? capabilities.browser_version : "N/A",
-            capabilities.os,
+            _.capitalize(capabilities.os),
             capabilities.os_version,
             capabilities.device ? capabilities.device : "N/A"
           ]);
@@ -84,18 +84,19 @@ export default {
   },
 
   _generateKey(capabilities) {
-    const values = [
-      capabilities.os,
-      capabilities.os_version,
-      capabilities.browser
-    ];
+    const values = [];
 
-    if (capabilities.device) {
-      values.push(capabilities.device);
-    }
+    values.push(capabilities.browser);
 
     if (capabilities.browser_version) {
       values.push(capabilities.browser_version);
+    }
+
+    values.push(capabilities.os);
+    values.push(capabilities.os_version);
+
+    if (capabilities.device) {
+      values.push(capabilities.device);pwd
     }
 
     const key = values.join("_").replace(/(\.|\s)/g, "_");
