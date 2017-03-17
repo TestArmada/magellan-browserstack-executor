@@ -89,7 +89,7 @@ export default {
       logger.debug("Browserstack local tunnel configuration: ");
       logger.debug(JSON.stringify(settings.config));
 
-      logger.log("Browserstack local tunnel configuration OK");
+      logger.log("Browserstack local tunnel configuration is OK");
 
     }
 
