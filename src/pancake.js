@@ -2,21 +2,28 @@ import _ from "lodash";
 import request from "request";
 import Table from "cli-table";
 import clc from "cli-color";
-import settings from "./settings";
+// import settings from "./settings";
 import logger from "./logger";
+import configuration from "./configuration";
 
-const config = settings.config;
+// const config = settings.config;
 const BROWSERSTACK_API_URL = "https://www.browserstack.com/automate/browsers.json";
 let browserCache = {};
 
 export default {
-  initialize() {
+  initialize(argvMock = null, envMock = null) {
     const self = this;
+    let config = null;
 
     return new Promise((resolve, reject) => {
       if (_.keys(browserCache).length > 0) {
         resolve(browserCache);
       } else {
+        try {
+          config = configuration.validateConfig({}, argvMock, envMock);
+        } catch (e) {
+          reject(e);
+        }
         const options = {
           "auth": {
             "user": config.user,
@@ -96,7 +103,7 @@ export default {
     values.push(capabilities.os_version);
 
     if (capabilities.device) {
-      values.push(capabilities.device);pwd
+      values.push(capabilities.device);
     }
 
     const key = values.join("_").replace(/(\.|\s)/g, "_");
