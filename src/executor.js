@@ -75,7 +75,7 @@ export default {
       return tunnel
         .close()
         .then(() => {
-          logger.log("Browserstack tunnel is closed!  Continuing...");
+          logger.log("Browserstack tunnel is closed!  Continueing...");
         });
     } else {
       return new Promise((resolve) => {

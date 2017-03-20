@@ -5,6 +5,7 @@ import clc from "cli-color";
 const debug = argv.debug;
 const PREFIX = "Browserstack Executor";
 
+/* istanbul ignore next */
 export default {
   output: console,
 

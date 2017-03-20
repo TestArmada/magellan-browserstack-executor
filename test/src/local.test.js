@@ -1,4 +1,5 @@
 import Connect from "../../lib/local";
+import settings from "../../lib/settings";
 import chai from "chai";
 import chaiAsPromise from "chai-as-promised";
 import _ from "lodash";
@@ -61,7 +62,7 @@ describe("Connect", () => {
             .equal("Browserstack local tunnel support is missing configuration: Browserstack key."));
     });
 
-     it("missing user", () => {
+    it("missing user", () => {
       tunnel = new Connect({ key: "FAKE_KEY" }, BrowserstackMock);
 
       return tunnel
@@ -79,6 +80,7 @@ describe("Connect", () => {
 
     afterEach(() => {
       BrowserstackMock.start = (opts, callback) => callback();
+      settings.BAILED = false;
     });
 
     it("straight succeed", () => {
@@ -93,8 +95,18 @@ describe("Connect", () => {
 
       return tunnel
         .open()
-        .then(() => assert(false, "browserstack local connect open isn't failed correctly." + err))
+        .then(() => assert(false, "browserstack local connect open isn't failed correctly."))
         .catch(err => expect(err.message).to.equal("Failed to create a secure browserstack local connect after 10 attempts."));
+    });
+
+    it("bail fail", () => {
+      settings.BAILED = true;
+      BrowserstackMock.start = (opts, callback) => callback("FAKE_ERROR");
+
+      return tunnel
+        .open()
+        .then(() => assert(false, "browserstack local connect open isn't failed correctly."))
+        .catch(err => expect(err.message).to.equal("Bailed due to maximum number of browsetstack connect retries."));
     });
   });
 

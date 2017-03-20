@@ -4,6 +4,7 @@ import { EventEmitter } from "events";
 const timeline = [];
 const _emitter = new EventEmitter();
 
+/* istanbul ignore next */
 export default {
   // Push a global (i.e. not testrun related) analytics event to the timeline.
   // This will cause any reporters that listen to global analytics events to

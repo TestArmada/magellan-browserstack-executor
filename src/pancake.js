@@ -11,12 +11,13 @@ const BROWSERSTACK_API_URL = "https://www.browserstack.com/automate/browsers.jso
 let browserCache = {};
 
 export default {
-  initialize(argvMock = null, envMock = null) {
+  initialize(ignoreCache = false, argvMock = null, envMock = null) {
     const self = this;
     let config = null;
 
     return new Promise((resolve, reject) => {
-      if (_.keys(browserCache).length > 0) {
+      if (!ignoreCache
+        && _.keys(browserCache).length > 0) {
         resolve(browserCache);
       } else {
         try {

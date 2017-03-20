@@ -140,6 +140,23 @@ describe("Profile", function () {
           expect(profile.id).to.equal("ipad_ios_9_1_iPad_Pro");
         });
     });
+
+    it("cannot solve", () => {
+      let p = {
+        "browser": "ipad_ios_9_1_iPad_Pro_2",
+        "executor": "browserstack",
+        "orientation": "portrait"
+      };
+
+      return profile
+        .getCapabilities(p)
+        .then((profile) => {
+          assert(false, "shoudn't be here");
+        })
+        .catch(err => {
+          expect(err).to.match(/^Executor browserstack cannot resolve profile/);
+        });
+    });
   });
 
   describe("listBrowsers", () => {

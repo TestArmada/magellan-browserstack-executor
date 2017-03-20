@@ -111,13 +111,7 @@ export default {
       });
   },
 
-  listBrowsers: (opts, callback, argvMock = null) => {
-    let runArgv = argv;
-
-    if (argvMock) {
-      runArgv = argvMock;
-    }
-
+  listBrowsers: (opts, callback) => {
     Pancake
       .initialize()
       .then((browsers) => {
