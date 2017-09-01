@@ -12,11 +12,10 @@ const config = {
 
   // optional:
   useTunnels: null,
-  localIdentifier: null
-  // locksServerLocation: null,
-  // locksOutageTimeout: 1000 * 60 * 5,
-  // locksPollingInterval: 2500,
-  // locksRequestTimeout: 2500
+  localIdentifier: null,
+  moreLogs: null,
+  realDevice: null,
+  app: null
 };
 
 export default {

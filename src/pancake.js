@@ -2,16 +2,15 @@ import _ from "lodash";
 import request from "request";
 import Table from "cli-table";
 import clc from "cli-color";
-// import settings from "./settings";
-import logger from "./logger";
+import logger from "testarmada-logger";
 import configuration from "./configuration";
 
-// const config = settings.config;
 const BROWSERSTACK_API_URL = "https://www.browserstack.com/automate/browsers.json";
 let browserCache = {};
 
 export default {
   initialize(ignoreCache = false, argvMock = null, envMock = null) {
+    logger.prefix = "Browserstack Executor";
     const self = this;
     let config = null;
 
@@ -54,6 +53,7 @@ export default {
   },
 
   cliList() {
+    logger.prefix = "Browserstack Executor";
     const self = this;
 
     if (_.keys(browserCache).length > 0) {

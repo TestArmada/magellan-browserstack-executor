@@ -1,23 +1,19 @@
 import { fork } from "child_process";
+import logger from "testarmada-logger";
 import Tunnel from "./local";
-import logger from "./logger";
 import settings from "./settings";
 import analytics from "./global_analytics";
 
 let config = settings.config;
 
 let tunnel = null;
-// const locks = null;
 
 export default {
   setupRunner: (mocks = null) => {
-    // let ILocks = Locks;
+    logger.prefix = "Browserstack Executor";
     let ITunnel = Tunnel;
 
     if (mocks) {
-    //   if (mocks.Locks) {
-    //     ILocks = mocks.Locks;
-    //   }
       if (mocks.Tunnel) {
         ITunnel = mocks.Tunnel;
       }
@@ -25,8 +21,6 @@ export default {
         config = mocks.config;
       }
     }
-
-    // locks = new ILocks(config);
 
     if (config.useTunnels) {
       // create new tunnel if needed
@@ -41,7 +35,7 @@ export default {
         .then(() => {
           analytics.mark("browserstack-open-tunnels");
           logger.log("Browserstack local tunnel is opened!  Continuing...");
-          logger.log(`Assigned local tunnel [${ config.localIdentifier }] to all workers`);
+          logger.log(`Assigned local tunnel [${config.localIdentifier}] to all workers`);
         })
         .catch((err) => {
           analytics.mark("browserstack-open-tunnels", "failed");
@@ -53,10 +47,7 @@ export default {
       return new Promise((resolve) => {
         if (config.localIdentifier) {
           const tunnelAnnouncement = config.localIdentifier;
-        //   if (config.sharedSauceParentAccount) {
-        //     tunnelAnnouncement = `${config.sharedSauceParentAccount }/${ tunnelAnnouncement}`;
-        //   }
-          logger.log(`Connected to browserstack local tunnel [${ tunnelAnnouncement }]`);
+          logger.log(`Connected to browserstack local tunnel [${tunnelAnnouncement}]`);
         } else {
           logger.log("Connected to browserstack local without tunnel");
         }
@@ -66,6 +57,7 @@ export default {
   },
 
   teardownRunner: (mocks = null) => {
+    logger.prefix = "Browserstack Executor";
     if (mocks && mocks.config) {
       config = mocks.config;
     }
@@ -85,12 +77,10 @@ export default {
   },
 
   setupTest: (callback) => {
-    // locks.acquire(callback);
     callback();
   },
 
   teardownTest: (info, callback) => {
-    // locks.release(info, callback);
     callback();
   },
 
@@ -105,6 +95,14 @@ export default {
   },
 
   summerizeTest: (magellanBuildId, testResult, callback) => {
-    callback();
+    logger.prefix = "Browserstack Executor";
+
+    if (!testResult.metadata) {
+      logger.warn("No meta data is found."
+        + " This is mainly caused by not using https://github.com/TestArmada/nightwatch-extra");
+      return callback();
+    }
+
+    return callback();
   }
 };

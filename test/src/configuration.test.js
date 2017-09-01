@@ -48,7 +48,7 @@ describe("Configuration", () => {
 
       it("succeed", () => {
         let argvMock = {
-          bsbrowsers: "chrome_56_0_Windows_7",
+          bs_browsers: "chrome_56_0_Windows_7",
           bs_browser: "chrome_56_0_Windows_7",
           bs_create_tunnel: true
         };

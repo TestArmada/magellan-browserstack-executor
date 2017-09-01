@@ -1,10 +1,11 @@
 import _ from "lodash";
 import { argv } from "yargs";
-import logger from "./logger";
+import logger from "testarmada-logger";
 import Pancake from "./pancake";
 
 export default {
   getNightwatchConfig: (profile, browserstackSettings) => {
+    logger.prefix = "Browserstack Executor";
     const capabilities = _.assign({}, profile.desiredCapabilities);
 
     capabilities["browserstack.user"] = browserstackSettings.user;
@@ -14,6 +15,22 @@ export default {
       capabilities["browserstack.local"] = true;
       capabilities["browserstack.localIdentifier"] = browserstackSettings.localIdentifier;
     }
+
+
+    if (browserstackSettings.moreLogs) {
+      capabilities["browserstack.debug"] = true;
+      capabilities["browserstack.networkLogs"] = true;
+    }
+
+    if (browserstackSettings.realDevice) {
+      // hardcode for now
+      capabilities.realMobile = true;
+    }
+
+    if (browserstackSettings.app) {
+      capabilities.app = browserstackSettings.app;
+    }
+
     const config = {
       desiredCapabilities: capabilities
     };
@@ -23,6 +40,7 @@ export default {
   },
 
   getProfiles: (opts, argvMock = null) => {
+    logger.prefix = "Browserstack Executor";
     let runArgv = argv;
 
     if (argvMock) {
@@ -73,6 +91,7 @@ export default {
 
   /*eslint-disable no-unused-vars*/
   getCapabilities: (profile, opts) => {
+    logger.prefix = "Browserstack Executor";
     // profile key mapping
     // browser => id
     // resolution => resolution
@@ -112,6 +131,7 @@ export default {
   },
 
   listBrowsers: (opts, callback) => {
+    logger.prefix = "Browserstack Executor";
     Pancake
       .initialize()
       .then((browsers) => {

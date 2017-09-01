@@ -1,18 +1,19 @@
 import { argv } from "yargs";
 import _ from "lodash";
-import logger from "./logger";
+import logger from "testarmada-logger";
 import settings from "./settings";
 import guid from "./util/guid";
 
 export default {
   getConfig: () => {
+    logger.prefix = "Browserstack Executor";
     logger.debug(`executor config: ${JSON.stringify(settings.config)}`);
     return settings.config;
   },
 
   /*eslint-disable complexity*/
   validateConfig: (opts, argvMock = null, envMock = null) => {
-    // let config = _.assign({}, settings.config);
+    logger.prefix = "Browserstack Executor";
     let runArgv = argv;
     let env = process.env;
 
@@ -30,19 +31,9 @@ export default {
     // optional:
     settings.config.localIdentifier = runArgv.bs_tunnel_id;
     settings.config.useTunnels = !!runArgv.bs_create_tunnel;
-    // settings.config.tunnelTimeout = env.SAUCE_TUNNEL_CLOSE_TIMEOUT;
-
-    // settings.config.locksServerLocation = env.LOCKS_SERVER;
-
-    // Remove trailing / in locks server location if it's present.
-    // if (typeof settings.config.locksServerLocation === "string"
-    //   && settings.config.locksServerLocation.length > 0) {
-    //   if (settings.config.locksServerLocation.charAt(
-    //     settings.config.locksServerLocation.length - 1) === "/") {
-    //     settings.config.locksServerLocation = settings.config.locksServerLocation.substr(0,
-    //       settings.config.locksServerLocation.length - 1);
-    //   }
-    // }
+    settings.config.moreLogs = !!runArgv.bs_enable_more_logs;
+    settings.config.realDevice = !!runArgv.bs_real_device;
+    settings.config.app = !!runArgv.bs_app;
 
     const parameterWarnings = {
       key: {

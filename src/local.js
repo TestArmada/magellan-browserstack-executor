@@ -3,7 +3,7 @@ import { Local as Browserstack } from "browserstack-local";
 import _ from "lodash";
 
 import settings from "./settings";
-import logger from "./logger";
+import logger from "testarmada-logger";
 
 export default class Local {
   constructor(options, BrowserstackMock = null) {
@@ -32,6 +32,7 @@ export default class Local {
   }
 
   open() {
+    logger.prefix = "Browserstack Executor";
     const localIdentifier = this.options.localIdentifier;
     const localKey = this.options.key;
     let connectFailures = 0;
@@ -92,6 +93,7 @@ export default class Local {
   }
 
   close() {
+    logger.prefix = "Browserstack Executor";
     return new Promise((resolve) => {
       logger.log(`Closing browserstack local connect [${this.options.localIdentifier}]`);
       this.browserstack.stop(() => {
