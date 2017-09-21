@@ -27,6 +27,12 @@ describe("Executor", () => {
     });
   });
 
+  it("summerizeTest with metadata", (done) => {
+    executor.summerizeTest("FAKE_ID", { metadata: "yep" }, () => {
+      done();
+    });
+  });
+
   it("execute", (done) => {
     const testRun = {
       getCommand() { },

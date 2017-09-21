@@ -174,12 +174,18 @@ describe("Profile", function () {
           user: "FAKE_USER",
           key: "FAKE_KEY",
           useTunnels: false,
-          localIdentifier: "FAKE_TUNNEl_ID"
+          localIdentifier: "FAKE_TUNNEl_ID",
+          moreLogs: true,
+          realDevice: true,
+          app: "FAKE_APP"
         });
 
       expect(config.desiredCapabilities.browser).to.equal("ipad");
       expect(config.desiredCapabilities["browserstack.user"]).to.equal("FAKE_USER");
       expect(config.desiredCapabilities["browserstack.key"]).to.equal("FAKE_KEY");
+      expect(config.desiredCapabilities["browserstack.networkLogs"]).to.equal(true);
+      expect(config.desiredCapabilities.realMobile).to.equal(true);
+      expect(config.desiredCapabilities.app).to.equal("FAKE_APP");
     });
 
     it("with tunnel", () => {
