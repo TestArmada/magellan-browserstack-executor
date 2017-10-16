@@ -121,6 +121,11 @@ export default {
               id
             };
 
+            // for appium test
+            if (profile.appium) {
+              p.desiredCapabilities = _.merge(p.desiredCapabilities, profile.appium);
+            }
+
             resolve(p);
           } catch (e) {
             reject(`Executor browserstack cannot resolve profile 

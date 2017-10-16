@@ -33,7 +33,7 @@ export default {
     settings.config.useTunnels = !!runArgv.bs_create_tunnel;
     settings.config.moreLogs = !!runArgv.bs_enable_more_logs;
     settings.config.realDevice = !!runArgv.bs_real_device;
-    settings.config.app = !!runArgv.bs_app;
+    settings.config.app = runArgv.bs_app;
 
     const parameterWarnings = {
       key: {
