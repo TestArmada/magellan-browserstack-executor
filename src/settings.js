@@ -15,7 +15,8 @@ const config = {
   localIdentifier: null,
   moreLogs: null,
   realDevice: null,
-  app: null
+  app: null,
+  browserstackOutboundProxy: null
 };
 
 export default {
