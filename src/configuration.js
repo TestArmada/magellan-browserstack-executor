@@ -77,6 +77,13 @@ export default {
         settings.config.localIdentifier = guid();
       }
 
+      // optional: *Outbound* HTTP Browserstack-specific proxy configuration. Note
+      // that this is for Selenium outbound control traffic only, not the
+      // return path.
+      if (env.BROWSERSTACK_OUTBOUND_PROXY) {
+        settings.config.browserstackOutboundProxy = env.BROWSERSTACK_OUTBOUND_PROXY;
+      }
+
       logger.debug("Browserstack local tunnel configuration: ");
       logger.debug(JSON.stringify(settings.config));
 

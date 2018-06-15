@@ -32,6 +32,11 @@ export default {
           }
         };
 
+        if (config.browserstackOutboundProxy) {
+          options.proxy = config.browserstackOutboundProxy;
+          options.strictSSL = false;
+        }
+
         request.get(BROWSERSTACK_API_URL, options, (err, response, body) => {
           if (err) {
             reject(err);
